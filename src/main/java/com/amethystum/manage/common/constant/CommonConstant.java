@@ -6,11 +6,13 @@ package com.amethystum.manage.common.constant;
  * @author Amethystum
  */
 public interface CommonConstant {
-
+	/**
+	 * 未登陆用户标致
+	 */
+	String anonymousUser="anonymousUser";
     /**
      * 用户默认头像
      */
-//    String USER_DEFAULT_AVATAR = "https://s1.ax1x.com/2018/05/19/CcdVQP.png";
     String USER_DEFAULT_AVATAR = "#";
 
     /**

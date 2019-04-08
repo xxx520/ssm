@@ -6,9 +6,7 @@ import com.amethystum.manage.common.vo.PageVo;
 import com.amethystum.manage.common.vo.Result;
 import com.amethystum.manage.common.vo.SearchVo;
 import com.amethystum.manage.modules.base.entity.Log;
-import com.amethystum.manage.modules.base.entity.elasticsearch.EsLog;
 import com.amethystum.manage.modules.base.service.LogService;
-import com.amethystum.manage.modules.base.service.elasticsearch.EsLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +27,6 @@ import org.springframework.web.bind.annotation.*;
 @Transactional
 public class LogController{
 
-    @Value("${boot.logRecord.es}")
-    private Boolean esRecord;
-
-    @Autowired
-    private EsLogService esLogService;
-
     @Autowired
     private LogService logService;
 
@@ -45,13 +37,8 @@ public class LogController{
                                        @ModelAttribute SearchVo searchVo,
                                        @ModelAttribute PageVo pageVo){
 
-        if(esRecord){
-            Page<EsLog> es = esLogService.findByConfition(type, key, searchVo, PageUtil.initPage(pageVo));
-            return new ResultUtil<Object>().setData(es);
-        }else{
-            Page<Log> log = logService.findByConfition(type, key, searchVo, PageUtil.initPage(pageVo));
-            return new ResultUtil<Object>().setData(log);
-        }
+        Page<Log> log = logService.findByConfition(type, key, searchVo, PageUtil.initPage(pageVo));
+        return new ResultUtil<Object>().setData(log);
     }
 
     @RequestMapping(value = "/delByIds/{ids}",method = RequestMethod.DELETE)
@@ -59,11 +46,7 @@ public class LogController{
     public Result<Object> delByIds(@PathVariable String[] ids){
 
         for(String id : ids){
-            if(esRecord){
-                esLogService.deleteLog(id);
-            }else{
-                logService.delete(id);
-            }
+           logService.delete(id);
         }
         return new ResultUtil<Object>().setSuccessMsg("删除成功");
     }
@@ -71,12 +54,7 @@ public class LogController{
     @RequestMapping(value = "/delAll",method = RequestMethod.DELETE)
     @ApiOperation(value = "全部删除")
     public Result<Object> delAll(){
-
-        if(esRecord){
-            esLogService.deleteAll();
-        }else{
-            logService.deleteAll();
-        }
+        logService.deleteAll();
         return new ResultUtil<Object>().setSuccessMsg("删除成功");
     }
 }

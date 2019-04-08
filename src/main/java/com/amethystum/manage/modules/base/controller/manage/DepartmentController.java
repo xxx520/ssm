@@ -1,5 +1,6 @@
 package com.amethystum.manage.modules.base.controller.manage;
 
+import com.amethystum.manage.common.annotation.SystemLog;
 import com.amethystum.manage.common.constant.CommonConstant;
 import com.amethystum.manage.common.utils.HibernateProxyTypeAdapter;
 import com.amethystum.manage.common.utils.ResultUtil;
@@ -12,14 +13,18 @@ import com.amethystum.manage.modules.base.service.DepartmentHeaderService;
 import com.amethystum.manage.modules.base.service.DepartmentService;
 import com.amethystum.manage.modules.base.service.RoleDepartmentService;
 import com.amethystum.manage.modules.base.service.UserService;
+
 import org.springframework.util.StringUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.data.redis.core.StringRedisTemplate;

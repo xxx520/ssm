@@ -1,15 +1,17 @@
 package com.amethystum.manage.common.aop;
 
 import com.amethystum.manage.common.annotation.SystemLog;
+import com.amethystum.manage.common.constant.CommonConstant;
 import com.amethystum.manage.common.utils.IpInfoUtil;
 import com.amethystum.manage.common.utils.ObjectUtil;
 import com.amethystum.manage.common.utils.ThreadPoolUtil;
 import com.amethystum.manage.modules.base.entity.Log;
-import com.amethystum.manage.modules.base.entity.elasticsearch.EsLog;
 import com.amethystum.manage.modules.base.service.LogService;
-import com.amethystum.manage.modules.base.service.elasticsearch.EsLogService;
+
 import org.springframework.util.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,12 +38,6 @@ import java.util.Map;
 public class SystemLogAspect {
 
     private static final ThreadLocal<Date> beginTimeThreadLocal = new NamedThreadLocal<Date>("ThreadLocal beginTime");
-
-    @Value("${boot.logRecord.es}")
-    private Boolean esRecord;
-
-    @Autowired
-    private EsLogService esLogService;
 
     @Autowired
     private LogService logService;
@@ -81,99 +78,43 @@ public class SystemLogAspect {
     @After("controllerAspect()")
     public void after(JoinPoint joinPoint){
         try {
-            UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username= user.getUsername();
-
+        	//anonymousUser
+            Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username=null;
+            if(user==null){username="";}else
+            if(CommonConstant.anonymousUser.equals(user)){username=user.toString();}else
+            username= ((UserDetails)user).getUsername();
+            
             if (!StringUtils.isEmpty(username)) {
+                Log log = new Log();
 
-                if(esRecord){
-                    EsLog esLog = new EsLog();
-
-                    //日志标题
-                    esLog.setName(getControllerMethodInfo(joinPoint).get("description").toString());
-                    //日志类型
-                    esLog.setLogType((int)getControllerMethodInfo(joinPoint).get("type"));
-                    //日志请求url
-                    esLog.setRequestUrl(request.getRequestURI());
-                    //请求方式
-                    esLog.setRequestType(request.getMethod());
-                    //请求参数
-                    Map<String,String[]> logParams=request.getParameterMap();
-                    esLog.setMapToParams(logParams);
-                    //请求用户
-                    esLog.setUsername(username);
-                    //请求IP
-                    esLog.setIp(ipInfoUtil.getIpAddr(request));
-                    //IP地址
-                    esLog.setIpInfo(ipInfoUtil.getIpAddr(request));
-                    //请求开始时间
-                    Date logStartTime = beginTimeThreadLocal.get();
-
-                    long beginTime = beginTimeThreadLocal.get().getTime();
-                    long endTime = System.currentTimeMillis();
-                    //请求耗时
-                    Long logElapsedTime = endTime - beginTime;
-                    esLog.setCostTime(logElapsedTime.intValue());
-//                    ipInfoUtil.getInfo(request, ObjectUtil.mapToStringAll(request.getParameterMap()));
-
-                    //调用线程保存至ES
-                    ThreadPoolUtil.getPool().execute(new SaveEsSystemLogThread(esLog, esLogService));
-                }else{
-                    Log log = new Log();
-
-                    //日志标题
-                    log.setName(getControllerMethodInfo(joinPoint).get("description").toString());
-                    //日志类型
-                    log.setLogType((int)getControllerMethodInfo(joinPoint).get("type"));
-                    //日志请求url
-                    log.setRequestUrl(request.getRequestURI());
-                    //请求方式
-                    log.setRequestType(request.getMethod());
-                    //请求参数
-                    Map<String,String[]> logParams=request.getParameterMap();
-                    log.setMapToParams(logParams);
-                    //请求用户
-                    log.setUsername(username);
-                    //请求IP
-                    log.setIp(ipInfoUtil.getIpAddr(request));
-                    //IP地址
-                    log.setIpInfo(ipInfoUtil.getIpAddr(request));
-                    //请求开始时间
-                    Date logStartTime = beginTimeThreadLocal.get();
-
-                    long beginTime = beginTimeThreadLocal.get().getTime();
-                    long endTime = System.currentTimeMillis();
-                    //请求耗时
-                    Long logElapsedTime = endTime - beginTime;
-                    log.setCostTime(logElapsedTime.intValue());
-//                    ipInfoUtil.getInfo(request, ObjectUtil.mapToStringAll(request.getParameterMap()));
-
-                    //调用线程保存至ES
-                    ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(log, logService));
-                }
+                //日志标题
+                log.setName(getControllerMethodInfo(joinPoint).get("description").toString());
+                //日志类型
+                log.setLogType((int)getControllerMethodInfo(joinPoint).get("type"));
+                //日志请求url
+                log.setRequestUrl(request.getRequestURI());
+                //请求方式
+                log.setRequestType(request.getMethod());
+                //请求参数
+                Map<String,String[]> logParams=request.getParameterMap();
+                log.setMapToParams(logParams);
+                //请求用户
+                log.setUsername(username);
+                //请求IP
+                log.setIp(ipInfoUtil.getIpAddr(request));
+                //IP地址
+//                log.setIpInfo(ipInfoUtil.getIpAddr(request));
+                long beginTime = beginTimeThreadLocal.get().getTime();
+                long endTime = System.currentTimeMillis();
+                //请求耗时
+                Long logElapsedTime = endTime - beginTime;
+                log.setCostTime(logElapsedTime.intValue());
+                //调用线程保存
+                ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(log, logService));
             }
         } catch (Exception e) {
             log.error("AOP后置通知异常", e);
-        }
-    }
-
-    /**
-     * 保存日志至ES
-     */
-    private static class SaveEsSystemLogThread implements Runnable {
-
-        private EsLog esLog;
-        private EsLogService esLogService;
-
-        public SaveEsSystemLogThread(EsLog esLog, EsLogService esLogService) {
-            this.esLog = esLog;
-            this.esLogService = esLogService;
-        }
-
-        @Override
-        public void run() {
-
-            esLogService.saveLog(esLog);
         }
     }
 

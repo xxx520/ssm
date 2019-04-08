@@ -33,7 +33,7 @@ CREATE TABLE `t_demo` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_department`;
 CREATE TABLE `t_department` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -67,7 +67,7 @@ INSERT INTO `t_department` VALUES ('40652338142121984', null, '2018-08-11 18:30:
 -- ----------------------------
 DROP TABLE IF EXISTS `t_department_header`;
 CREATE TABLE `t_department_header` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `t_department_header` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dict`;
 CREATE TABLE `t_dict` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -114,7 +114,7 @@ INSERT INTO `t_dict` VALUES ('75392985935646720', 'admin', '2018-11-15 15:17:10'
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dict_data`;
 CREATE TABLE `t_dict_data` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -174,7 +174,7 @@ INSERT INTO `t_dict_data` VALUES ('75394759287377920', 'admin', '2018-11-15 15:2
 -- ----------------------------
 DROP TABLE IF EXISTS `t_file`;
 CREATE TABLE `t_file` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE `t_file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_log`;
 CREATE TABLE `t_log` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -240,7 +240,7 @@ INSERT INTO `t_log` VALUES ('124331427843018752', null, '2019-03-30 16:21:03', '
 -- ----------------------------
 DROP TABLE IF EXISTS `t_permission`;
 CREATE TABLE `t_permission` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -357,7 +357,7 @@ INSERT INTO `t_permission` VALUES ('113602342657462272', 'admin', '2019-03-01 01
 -- ----------------------------
 DROP TABLE IF EXISTS `t_quartz_job`;
 CREATE TABLE `t_quartz_job` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -382,7 +382,7 @@ INSERT INTO `t_quartz_job` VALUES ('41060689401352192', '', '2018-08-12 20:32:52
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_by` varchar(255) DEFAULT NULL,
@@ -407,7 +407,7 @@ INSERT INTO `t_role` VALUES ('16457350655250432', '', '2018-06-06 00:08:00', 'ad
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role_department`;
 CREATE TABLE `t_role_department` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -430,7 +430,7 @@ INSERT INTO `t_role_department` VALUES ('70763874277658624', 'admin', '2018-11-0
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role_permission`;
 CREATE TABLE `t_role_permission` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -629,7 +629,7 @@ INSERT INTO `t_role_permission` VALUES ('118525221534699520', null, '2019-03-14 
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_by` varchar(255) DEFAULT NULL,
@@ -663,7 +663,7 @@ INSERT INTO `t_user` VALUES ('124297167375437824', '', '2019-03-30 14:04:55', ''
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_role`;
 CREATE TABLE `t_user_role` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
