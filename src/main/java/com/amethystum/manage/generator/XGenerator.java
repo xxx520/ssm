@@ -19,7 +19,7 @@ import java.io.OutputStream;
  * @author Amethystum
  */
 @Slf4j
-public class XbootGenerator {
+public class XGenerator {
     private static  String className = "Demo";
     private static  String description = "";
     private static  String author = "Amethystum";

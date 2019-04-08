@@ -26,13 +26,13 @@ import java.lang.reflect.Method;
 @Component
 public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
 
-    @Value("${xboot.rateLimit.enable}")
+    @Value("${boot.rateLimit.enable}")
     private boolean rateLimitEnable;
 
-    @Value("${xboot.rateLimit.limit}")
+    @Value("${boot.rateLimit.limit}")
     private Integer limit;
 
-    @Value("${xboot.rateLimit.timeout}")
+    @Value("${boot.rateLimit.timeout}")
     private Integer timeout;
 
     @Autowired

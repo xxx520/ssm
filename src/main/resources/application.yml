@@ -61,7 +61,7 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
-xboot:
+boot:
   # 全局限流
   rateLimit:
     enable: true
@@ -104,7 +104,8 @@ ignored:
     - /**/*.png
     - /**/*.ico
     - /test/**
-
+    - /xboot/demo/**
+    
 # Swagger界面内容配置
 swagger:
   title: XBoot API接口文档

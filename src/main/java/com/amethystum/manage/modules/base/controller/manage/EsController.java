@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @Transactional
 public class EsController {
 
-    @Value("${xboot.elasticsearch.nodeClient}")
+    @Value("${boot.elasticsearch.nodeClient}")
     private String ES_NODE_CLIENT;
 
     @RequestMapping(value = "/info",method = RequestMethod.GET)

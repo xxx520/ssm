@@ -2,20 +2,25 @@ package com.amethystum.manage.base;
 
 import com.amethystum.manage.common.constant.CommonConstant;
 import com.amethystum.manage.common.utils.SnowFlakeUtil;
+import com.amethystum.manage.common.utils.UUIdUtil;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author Amethystum
@@ -31,7 +36,8 @@ public abstract class BaseEntity implements Serializable{
     @Id
     @TableId
     @ApiModelProperty(value = "唯一标识")
-    private String id = String.valueOf(SnowFlakeUtil.getFlowIdInstance().nextId());
+//    private String id = String.valueOf(SnowFlakeUtil.getFlowIdInstance().nextId());
+    private String id = UUIdUtil.getUUid();
 
     @ApiModelProperty(value = "创建者")
     private String createBy;

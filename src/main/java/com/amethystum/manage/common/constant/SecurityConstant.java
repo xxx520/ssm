@@ -13,7 +13,7 @@ public interface SecurityConstant {
     /**
      * JWT签名加密key
      */
-    String JWT_SIGN_KEY = "xboot";
+    String JWT_SIGN_KEY = "boot";
 
     /**
      * token参数头
@@ -33,10 +33,10 @@ public interface SecurityConstant {
     /**
      * 交互token前缀key
      */
-    String TOKEN_PRE = "XBOOT_TOKEN_PRE:";
+    String TOKEN_PRE = "TOKEN_PRE:";
 
     /**
      * 用户token前缀key 单点登录使用
      */
-    String USER_TOKEN = "XBOOT_USER_TOKEN:";
+    String USER_TOKEN = "USER_TOKEN:";
 }

@@ -1,15 +1,21 @@
 package com.amethystum.manage.modules.api.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.amethystum.manage.base.BaseController;
+import com.amethystum.manage.common.annotation.SystemLog;
 import com.amethystum.manage.common.utils.PageUtil;
 import com.amethystum.manage.common.utils.ResultUtil;
 import com.amethystum.manage.common.vo.PageVo;
 import com.amethystum.manage.common.vo.Result;
 import com.amethystum.manage.modules.api.entity.Demo;
 import com.amethystum.manage.modules.api.service.DemoService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Api(description = "管理接口")
 @RequestMapping("/xboot/demo")
 @Transactional
+
 public class DemoController extends BaseController<Demo, String>{
 
     @Autowired
@@ -34,4 +41,13 @@ public class DemoController extends BaseController<Demo, String>{
         return demoService;
     }
 
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "for test unauth method")
+    @SystemLog
+    public Result<List<Demo>> test(){
+    	
+        return new ResultUtil<List<Demo>>().setData(new ArrayList<Demo>());
+    }
+    
 }

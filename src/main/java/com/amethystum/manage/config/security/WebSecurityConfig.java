@@ -30,10 +30,10 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${xboot.token.redis}")
+    @Value("${boot.token.redis}")
     private Boolean tokenRedis;
 
-    @Value("${xboot.tokenExpireTime}")
+    @Value("${boot.tokenExpireTime}")
     private Integer tokenExpireTime;
 
     @Autowired
