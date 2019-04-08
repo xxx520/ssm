@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amethystum.manage.modules.api.dao.mapper.Demo2Mapper">
+
+    <select id="findById" resultType="com.amethystum.manage.modules.api.entity.Demo">
+      SELECT u.id from t_demo u
+      WHERE u.id = #{id}
+    </select>
+</mapper>

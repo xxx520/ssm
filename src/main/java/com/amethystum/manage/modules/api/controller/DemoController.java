@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RestController
 @Api(description = "管理接口")
-@RequestMapping("/xboot/demo")
+@RequestMapping("/api/demo")
 @Transactional
 
 public class DemoController extends BaseController<Demo, String>{

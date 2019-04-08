@@ -1,6 +1,6 @@
 package ${entity.entityPackage};
 
-import com.amethystum.manage.base.XbootBaseEntity;
+import com.amethystum.manage.base.BaseEntity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "${entity.tableName}")
 @TableName("${entity.tableName}")
 @ApiModel(value = "${entity.description}")
-public class ${entity.className} extends XbootBaseEntity {
+public class ${entity.className} extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

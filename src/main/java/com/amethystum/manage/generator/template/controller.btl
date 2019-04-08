@@ -1,6 +1,6 @@
 package ${entity.controllerPackage};
 
-import com.amethystum.manage.base.XbootBaseController;
+import com.amethystum.manage.base.BaseController;
 import com.amethystum.manage.common.utils.PageUtil;
 import com.amethystum.manage.common.utils.ResultUtil;
 import com.amethystum.manage.common.vo.PageVo;
@@ -22,9 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RestController
 @Api(description = "${entity.description}管理接口")
-@RequestMapping("/xboot/${entity.classNameLowerCase}")
+@RequestMapping("/api/${entity.classNameLowerCase}")
 @Transactional
-public class ${entity.className}Controller extends XbootBaseController<${entity.className}, ${entity.primaryKeyType}>{
+public class ${entity.className}Controller extends BaseController<${entity.className}, ${entity.primaryKeyType}>{
 
     @Autowired
     private ${entity.className}Service ${entity.classNameLowerCase}Service;
