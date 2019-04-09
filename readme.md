@@ -29,3 +29,12 @@
 备注：
 	服务配置存储方式
 	
+### sql文件命名规范
+	table_name_date(yyyymmdd)_version(1开始).sql
+	必须字段:
+### entity规范
+
+
+
+	
+	
