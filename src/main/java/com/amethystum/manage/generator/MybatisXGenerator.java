@@ -30,6 +30,7 @@ public class MybatisXGenerator {
     private static  String servicePackage = "com.amethystum.manage.modules.your.service";
     private static  String serviceImplPackage = "com.amethystum.manage.modules.your.serviceimpl";
     private static  String controllerPackage = "com.amethystum.manage.modules.your.controller";
+    private static  String mapperXmlDir = "";
 
     /**
      * 运行该主函数即可生成代码
@@ -37,7 +38,7 @@ public class MybatisXGenerator {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-    	className="KeystoneUser";
+    	className="Demo2";
     	primaryKeyType="String";
     	tablePre="t_";
     	controllerPackage="com.amethystum.manage.modules.api.controller";
@@ -45,6 +46,7 @@ public class MybatisXGenerator {
     	entityPackage="com.amethystum.manage.modules.api.entity";
     	servicePackage="com.amethystum.manage.modules.api.service.mybatis";
     	serviceImplPackage="com.amethystum.manage.modules.api.serviceimpl.mybatis";
+    	mapperXmlDir=System.getProperty("user.dir")+"/src/main/resources/mapper";
     	
         //模板路径
         String root = System.getProperty("user.dir")+"/src/main/java/com/amethystum/manage/generator/template/mybatis";
@@ -71,6 +73,7 @@ public class MybatisXGenerator {
         Template serviceTemplate = gt.getTemplate("service.btl");
         Template serviceImplTemplate = gt.getTemplate("serviceImpl.btl");
         Template controllerTemplate = gt.getTemplate("controller.btl");
+        Template mapperXmlTemplate = gt.getTemplate("mapper.btl");
 
         EntityOfEntity entity = new EntityOfEntity();
         entity.setEntityPackage(entityPackage);
@@ -164,7 +167,23 @@ public class MybatisXGenerator {
         controllerFile.createNewFile();
         out = new FileOutputStream(controllerFile);
         controllerTemplate.renderTo(out);
+        
+        //生成mapper.xml代码
+        mapperXmlTemplate.binding("entity",entity);
+        String mapperXmlResult = controllerTemplate.render();
+        log.info(mapperXmlResult);
+        //创建文件
+        String mapperXmlFileUrl = mapperXmlDir + "/" + className + "Mapper.xml";
+        File mapperXmlFile = new File(mapperXmlFileUrl);
+        File mapperXmlDir = mapperXmlFile.getParentFile();
+        if (!mapperXmlDir.exists()) {
+        	mapperXmlDir.mkdirs();
+        }
+        mapperXmlFile.createNewFile();
+        out = new FileOutputStream(mapperXmlFile);
+        mapperXmlTemplate.renderTo(out);
 
+        
         out.close();
         log.info("生成代码成功！");
     }
