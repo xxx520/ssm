@@ -1,12 +1,15 @@
 package ${entity.entityPackage};
 
 import com.amethystum.manage.base.BaseEntity;
+import com.amethystum.manage.common.utils.UUIdUtil;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.TableId;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -17,8 +20,12 @@ import javax.persistence.Table;
 @Table(name = "${entity.tableName}")
 @TableName("${entity.tableName}")
 @ApiModel(value = "${entity.description}")
-public class ${entity.className} extends BaseEntity {
+public class ${entity.className}{
 
     private static final long serialVersionUID = 1L;
+    @Id
+    @TableId
+    @ApiModelProperty(value = "唯一标识")
+    private String id = UUIdUtil.getUUid();
 
 }
