@@ -35,6 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${boot.tokenExpireTime}")
     private Integer tokenExpireTime;
+    @Value("${boot.tologinurl}")
+    private String tologinurl;
+    @Value("${boot.loginurl}")
+    private String loginurl;
 
     @Autowired
     private IgnoredUrlsProperties ignoredUrlsProperties;
@@ -76,9 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         registry.and()
                 //表单登录方式
                 .formLogin()
-                .loginPage("/xboot/common/needLogin")
+                .loginPage(tologinurl)
                 //登录请求url
-                .loginProcessingUrl("/xboot/login")
+                .loginProcessingUrl(loginurl)
                 .permitAll()
                 //成功处理类
                 .successHandler(successHandler)
