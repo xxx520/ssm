@@ -16,6 +16,13 @@ import com.amethystum.manage.modules.api.dao.mapper.Demo2Mapper;
 import com.amethystum.manage.modules.api.entity.Demo;
 import com.amethystum.manage.modules.api.service.DemoService;
 import com.amethystum.manage.modules.base.entity.Dict;
+import com.amethystum.manage.modules.base.entity.Permission;
+import com.amethystum.manage.modules.base.entity.Role;
+import com.amethystum.manage.modules.base.entity.UserRole;
+import com.amethystum.manage.modules.base.service.mybatis.IPermissionService;
+import com.amethystum.manage.modules.base.service.mybatis.IUserRoleService;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 
 @RunWith(SpringRunner.class)
@@ -54,22 +61,21 @@ public class DemoServiceTest {
     	Assert.assertNotEquals(entity.getId(), "");
 //        assertThat(detail.getName(), Matchers.is(employeeDao.save(employee).getDetail().getName()));;
     }
+    
+    @Autowired
+    IPermissionService IPermissionService;
+    
+    @Autowired
+    IUserRoleService IUserRoleService;
     @Test
-//    @Transactional //如需要回滚
-    public void AddDemo() {
-    	Demo entity=new Demo();
-    	entity.setId( "234");
-    	entity.setCreateBy( "xxx");
-    	entity.setCreateTime(new Date());
-    	Integer ret = Demo2Mapper.insert(entity);
-    	Assert.assertNotEquals(ret+0, 0);
+    public void testCache(){
+//    	List<Permission> list = IPermissionService.findByUserId( "123");
+    	List<Role> list = IUserRoleService.findByUserId( "123");
+    	System.out.println(list.size());
     }
-    @Test
-    public void testMapper(){
-    	List<Demo> entity = Demo2Mapper.findById( "1234");
-    	System.out.println(new Gson().toJson(entity));
-    	Assert.assertEquals(entity.get(0).getId(), "1234");
-    }
+    
+    
+    
 }
 
 

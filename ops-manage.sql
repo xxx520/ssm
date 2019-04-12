@@ -18,11 +18,17 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for t_demo
 -- ----------------------------
-DROP TABLE IF EXISTS `t_demo`;
 CREATE TABLE `t_demo` (
   `id` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL COMMENT '名字',
+  `create_by` varchar(50) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `del_flag` int(11) DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '测试表';
+
 
 -- ----------------------------
 -- Records of t_demo
@@ -34,18 +40,18 @@ CREATE TABLE `t_demo` (
 DROP TABLE IF EXISTS `t_department`;
 CREATE TABLE `t_department` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `parent_id` varchar(255) DEFAULT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
   `sort_order` decimal(10,2) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `is_parent` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_department
@@ -68,16 +74,16 @@ INSERT INTO `t_department` VALUES ('40652338142121984', null, '2018-08-11 18:30:
 DROP TABLE IF EXISTS `t_department_header`;
 CREATE TABLE `t_department_header` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `department_id` varchar(255) DEFAULT NULL,
+  `department_id` varchar(32) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_department_header
@@ -89,17 +95,17 @@ CREATE TABLE `t_department_header` (
 DROP TABLE IF EXISTS `t_dict`;
 CREATE TABLE `t_dict` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
+  `type` varchar(50) DEFAULT NULL,
   `sort_order` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_dict
@@ -115,19 +121,19 @@ INSERT INTO `t_dict` VALUES ('75392985935646720', 'admin', '2018-11-15 15:17:10'
 DROP TABLE IF EXISTS `t_dict_data`;
 CREATE TABLE `t_dict_data` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `dict_id` varchar(255) DEFAULT NULL,
+  `dict_id` varchar(32) DEFAULT NULL,
   `sort_order` decimal(10,2) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `value` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_dict_data
@@ -175,10 +181,10 @@ INSERT INTO `t_dict_data` VALUES ('75394759287377920', 'admin', '2018-11-15 15:2
 DROP TABLE IF EXISTS `t_file`;
 CREATE TABLE `t_file` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `size` bigint(20) DEFAULT NULL,
@@ -187,7 +193,7 @@ CREATE TABLE `t_file` (
   `f_key` varchar(255) DEFAULT NULL,
   `location` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_file
@@ -199,13 +205,13 @@ CREATE TABLE `t_file` (
 DROP TABLE IF EXISTS `t_log`;
 CREATE TABLE `t_log` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `cost_time` int(11) DEFAULT NULL,
-  `ip` varchar(255) DEFAULT NULL,
+  `ip` varchar(32) DEFAULT NULL,
   `ip_info` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `request_param` longtext,
@@ -214,26 +220,12 @@ CREATE TABLE `t_log` (
   `username` varchar(255) DEFAULT NULL,
   `log_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_log
 -- ----------------------------
 INSERT INTO `t_log` VALUES ('123918030634749952', null, '2019-03-29 12:58:22', '0', null, '2019-03-29 12:58:22', '331', '127.0.0.1', '未知', '登录系统', '{\"password\":\"你是看不见我的\",\"saveLogin\":\"true\",\"username\":\"test\"}', 'POST', '/xboot/login', 'test', '1');
-INSERT INTO `t_log` VALUES ('124296353965674496', null, '2019-03-30 14:01:41', '0', null, '2019-03-30 14:01:41', '14', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124300968983531520', null, '2019-03-30 14:20:01', '0', null, '2019-03-30 14:20:01', '32', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124302822538743808', null, '2019-03-30 14:27:23', '0', null, '2019-03-30 14:27:23', '3', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124303135119249408', null, '2019-03-30 14:28:37', '0', null, '2019-03-30 14:28:37', '21', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"test\"}', 'POST', '/xboot/login', 'test', '1');
-INSERT INTO `t_log` VALUES ('124303870699507712', null, '2019-03-30 14:31:33', '0', null, '2019-03-30 14:31:33', '4', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124304415245996032', null, '2019-03-30 14:33:43', '0', null, '2019-03-30 14:33:43', '5', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"test\"}', 'POST', '/xboot/login', 'test', '1');
-INSERT INTO `t_log` VALUES ('124304969909145600', null, '2019-03-30 14:35:55', '0', null, '2019-03-30 14:35:55', '31', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"test\"}', 'POST', '/xboot/login', 'test', '1');
-INSERT INTO `t_log` VALUES ('124306996974325760', null, '2019-03-30 14:43:58', '0', null, '2019-03-30 14:43:58', '4', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124311814681923584', null, '2019-03-30 15:03:07', '0', null, '2019-03-30 15:03:07', '4', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124316131749007360', null, '2019-03-30 15:20:16', '0', null, '2019-03-30 15:20:16', '19', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"test\"}', 'POST', '/xboot/login', 'test', '1');
-INSERT INTO `t_log` VALUES ('124322510417170432', null, '2019-03-30 15:45:37', '0', null, '2019-03-30 15:45:37', '13', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124326065593126912', null, '2019-03-30 15:59:44', '0', null, '2019-03-30 15:59:44', '22', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124328758822834176', null, '2019-03-30 16:10:27', '0', null, '2019-03-30 16:10:27', '5', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
-INSERT INTO `t_log` VALUES ('124331427843018752', null, '2019-03-30 16:21:03', '0', null, '2019-03-30 16:21:03', '24', '127.0.0.1', '127.0.0.1', '登录系统', '{\"password\":\"123456\",\"saveLogin\":\"true\",\"username\":\"admin\"}', 'POST', '/xboot/login', 'admin', '1');
 
 -- ----------------------------
 -- Table structure for t_permission
@@ -241,14 +233,14 @@ INSERT INTO `t_log` VALUES ('124331427843018752', null, '2019-03-30 16:21:03', '
 DROP TABLE IF EXISTS `t_permission`;
 CREATE TABLE `t_permission` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `parent_id` varchar(255) DEFAULT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
   `sort_order` decimal(10,2) DEFAULT NULL,
   `component` varchar(255) DEFAULT NULL,
@@ -260,7 +252,7 @@ CREATE TABLE `t_permission` (
   `status` int(11) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -349,8 +341,8 @@ INSERT INTO `t_permission` VALUES ('84087480852156416', 'admin', '2018-12-09 15:
 INSERT INTO `t_permission` VALUES ('84087593041399808', 'admin', '2018-12-09 15:06:25', '0', 'admin', '2018-12-09 15:06:25', null, '', '80539147005071360', '1', '2.00', '', '/xboot/actCategory/delByIds/**', '删除流程分类', '', '3', 'delete', '0', null);
 INSERT INTO `t_permission` VALUES ('103658022701633536', 'admin', '2019-02-01 15:12:20', '0', 'admin', '2019-02-01 18:38:29', '', 'test', '102235632889237504', '0', '3.00', 'xboot-vue-generator/test', 'test', '代码生成测试页', 'ios-bug', '2', '', '0', '');
 INSERT INTO `t_permission` VALUES ('104451721685635072', 'admin', '2019-02-03 19:46:12', '0', 'admin', '2019-02-03 19:47:04', '', 'flutter', '104451415484665856', '0', '0.00', 'flutter/flutter', 'flutter', 'XBoot Flutter App', 'md-phone-portrait', '2', '', '0', '');
-INSERT INTO `t_permission` VALUES ('113603617897844736', 'admin', '2019-03-01 01:52:34', '0', 'admin', '2019-03-01 02:03:15', '', 'library', '113603512293658624', '0', '0.00', 'xboot-library/xboot-library', 'library', '第三方依赖工具/组件', 'ios-link', '2', '', '0', '');
-INSERT INTO `t_permission` VALUES ('113602342657462272', 'admin', '2019-03-01 01:47:30', '0', 'admin', '2019-03-01 02:03:26', '', 'components', '113602149589454848', '0', '0.00', 'xboot-components/xboot-components', 'components', 'XBoot业务组件', 'md-cube', '2', '', '0', '');
+INSERT INTO `t_permission` VALUES ('113603617897844736', 'admin', '2019-03-01 01:52:34', '0', 'admin', '2019-03-01 02:03:15', '', 'library', '113603512293658624', '0', '0.00', 'xboot-library/boot-library', 'library', '第三方依赖工具/组件', 'ios-link', '2', '', '0', '');
+INSERT INTO `t_permission` VALUES ('113602342657462272', 'admin', '2019-03-01 01:47:30', '0', 'admin', '2019-03-01 02:03:26', '', 'components', '113602149589454848', '0', '0.00', 'xboot-components/boot-components', 'components', 'XBoot业务组件', 'md-cube', '2', '', '0', '');
 
 -- ----------------------------
 -- Table structure for t_quartz_job
@@ -358,10 +350,10 @@ INSERT INTO `t_permission` VALUES ('113602342657462272', 'admin', '2019-03-01 01
 DROP TABLE IF EXISTS `t_quartz_job`;
 CREATE TABLE `t_quartz_job` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `cron_expression` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -369,7 +361,7 @@ CREATE TABLE `t_quartz_job` (
   `parameter` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_quartz_job
@@ -383,9 +375,9 @@ INSERT INTO `t_quartz_job` VALUES ('41060689401352192', '', '2018-08-12 20:32:52
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
@@ -393,7 +385,7 @@ CREATE TABLE `t_role` (
   `description` varchar(255) DEFAULT NULL,
   `data_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_role
@@ -408,15 +400,15 @@ INSERT INTO `t_role` VALUES ('16457350655250432', '', '2018-06-06 00:08:00', 'ad
 DROP TABLE IF EXISTS `t_role_department`;
 CREATE TABLE `t_role_department` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `department_id` varchar(255) DEFAULT NULL,
-  `role_id` varchar(255) DEFAULT NULL,
+  `role_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_role_department
@@ -431,15 +423,15 @@ INSERT INTO `t_role_department` VALUES ('70763874277658624', 'admin', '2018-11-0
 DROP TABLE IF EXISTS `t_role_permission`;
 CREATE TABLE `t_role_permission` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `permission_id` varchar(255) DEFAULT NULL,
-  `role_id` varchar(255) DEFAULT NULL,
+  `role_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_role_permission
@@ -630,15 +622,15 @@ INSERT INTO `t_role_permission` VALUES ('118525221534699520', null, '2019-03-14 
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `avatar` varchar(1000) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `mobile` varchar(255) DEFAULT NULL,
+  `mobile` varchar(20) DEFAULT NULL,
   `nick_name` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `sex` int(11) DEFAULT NULL,
@@ -650,7 +642,7 @@ CREATE TABLE `t_user` (
   `street` varchar(255) DEFAULT NULL,
   `pass_strength` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
@@ -664,17 +656,45 @@ INSERT INTO `t_user` VALUES ('124297167375437824', '', '2019-03-30 14:04:55', ''
 DROP TABLE IF EXISTS `t_user_role`;
 CREATE TABLE `t_user_role` (
   `id` varchar(32) NOT NULL,
-  `create_by` varchar(255) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `role_id` varchar(255) DEFAULT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
+  `role_id` varchar(32) DEFAULT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user_role
 -- ----------------------------
 INSERT INTO `t_user_role` VALUES ('70669807116095488', null, '2018-11-02 14:28:56', '0', null, '2018-11-02 14:28:56', '496138616573952', '682265633886208');
+
+CREATE TABLE `keystone_user` (
+  `id` varchar(64) NOT NULL,
+  `extra` text,
+  `enabled` tinyint(1) DEFAULT NULL,
+  `default_project_id` varchar(64) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `last_active_at` date DEFAULT NULL,
+  `domain_id` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ixu_user_id_domain_id` (`id`,`domain_id`),
+  KEY `domain_id` (`domain_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `keystone_project` (
+  `id` varchar(64) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `extra` text,
+  `description` text,
+  `enabled` tinyint(1) DEFAULT NULL,
+  `domain_id` varchar(64) NOT NULL,
+  `parent_id` varchar(64) DEFAULT NULL,
+  `is_domain` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ixu_project_name_domain_id` (`domain_id`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

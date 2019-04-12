@@ -7,7 +7,7 @@ jasypt:
 server:
   port: 8888
   servlet:
-    context-path: /
+    context-path: /ops-manage
   tomcat:
     uri-encoding: UTF-8
     max-threads: 1000
@@ -66,6 +66,8 @@ spring:
       max-request-size: 5MB
 
 boot:
+  tologinurl: /xboot/common/needLogin
+  loginurl: /xboot/login
   # 全局限流
   rateLimit:
     enable: true
@@ -109,6 +111,7 @@ ignored:
     - /**/*.ico
     - /test/**
     - /api/demo/**
+    - /api/keystoneUser/**
     
 # Swagger界面内容配置
 swagger:
