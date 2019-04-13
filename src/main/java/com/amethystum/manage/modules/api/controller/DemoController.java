@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Api(description = "管理接口")
 @RequestMapping("/api/demo")
 @Transactional
-
 public class DemoController extends BaseController<Demo, String>{
 
     @Autowired
@@ -46,7 +45,9 @@ public class DemoController extends BaseController<Demo, String>{
     @ApiOperation(value = "for test unauth method")
     @SystemLog
     public Result<List<Demo>> test(){
-    	
+    	log.info( "test info method");
+    	log.debug( "test debug method");
+    	log.error( "test error method");
         return new ResultUtil<List<Demo>>().setData(new ArrayList<Demo>());
     }
     

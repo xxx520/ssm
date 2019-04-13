@@ -4,8 +4,10 @@ import com.amethystum.manage.common.annotation.SystemLog;
 import com.amethystum.manage.common.constant.CommonConstant;
 import com.amethystum.manage.common.utils.IpInfoUtil;
 import com.amethystum.manage.common.utils.ObjectUtil;
+import com.amethystum.manage.common.utils.SecurityUtil;
 import com.amethystum.manage.common.utils.ThreadPoolUtil;
 import com.amethystum.manage.modules.base.entity.Log;
+import com.amethystum.manage.modules.base.entity.User;
 import com.amethystum.manage.modules.base.service.LogService;
 
 import org.springframework.util.StringUtils;
@@ -47,7 +49,9 @@ public class SystemLogAspect {
 
     @Autowired
     private IpInfoUtil ipInfoUtil;
-
+    
+    @Autowired
+    SecurityUtil SecurityUtil;
     /**
      * Controller层切点,注解方式
      */
@@ -79,6 +83,7 @@ public class SystemLogAspect {
     public void after(JoinPoint joinPoint){
         try {
         	//anonymousUser
+//        	User currUser = SecurityUtil.getCurrUser();
             Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String username=null;
             if(user==null){username="";}else
@@ -87,11 +92,11 @@ public class SystemLogAspect {
             
             if (!StringUtils.isEmpty(username)) {
                 Log log = new Log();
-
+                Map<String, Object> controllerMethodInfo = getControllerMethodInfo(joinPoint);
                 //日志标题
-                log.setName(getControllerMethodInfo(joinPoint).get("description").toString());
+                log.setName(controllerMethodInfo.get("description").toString());
                 //日志类型
-                log.setLogType((int)getControllerMethodInfo(joinPoint).get("type"));
+                log.setLogType((int)controllerMethodInfo.get("type"));
                 //日志请求url
                 log.setRequestUrl(request.getRequestURI());
                 //请求方式
