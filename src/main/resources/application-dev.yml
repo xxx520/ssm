@@ -147,6 +147,7 @@ mybatis-plus:
     jdbc-type-for-null: 'null'
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+
 # 日志
 logging:
   #file: logs/app.log

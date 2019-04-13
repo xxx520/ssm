@@ -36,5 +36,8 @@
 
 
 
-	
+	test
+http://localhost:8888/ops-manage/xboot/login
+
+
 	
