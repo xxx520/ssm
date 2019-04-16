@@ -7,7 +7,7 @@ jasypt:
 server:
   port: 8888
   servlet:
-    context-path: /ops-manage
+    context-path: /
   tomcat:
     uri-encoding: UTF-8
     max-threads: 1000
@@ -81,6 +81,8 @@ boot:
     redis: true
   # token过期时间（分钟）
   tokenExpireTime: 60
+  # 自定义缓存失效时间
+  selfExpireTime: 5
   # 用户选择保存登录状态对应token过期时间（天）
   saveLoginTime: 7
   # 限制用户登陆错误次数（次）

@@ -77,6 +77,7 @@ public class LimitRaterInterceptor extends HandlerInterceptorAdapter {
             }
         }catch (Exception e){
 
+        	
         }
 
         return true;

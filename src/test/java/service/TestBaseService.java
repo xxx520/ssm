@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BootApplication.class)
-public class DemoServiceTest {
+public class TestBaseService {
 
     @Autowired
     private DemoService DemoService;

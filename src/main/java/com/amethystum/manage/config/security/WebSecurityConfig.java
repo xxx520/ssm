@@ -82,8 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage(tologinurl)
                 //登录请求url
-//                .loginProcessingUrl(loginurl)
-                .loginProcessingUrl("/xboot/common/userlogin")
+                .loginProcessingUrl(loginurl)
+//                .loginProcessingUrl("/xboot/common/userlogin")
                 .permitAll()
                 //成功处理类
                 .successHandler(successHandler)

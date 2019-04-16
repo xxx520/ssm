@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.amethystum.manage.base.BaseController;
+import com.amethystum.manage.common.annotation.BizCacheable;
 import com.amethystum.manage.common.annotation.SystemLog;
 import com.amethystum.manage.common.utils.PageUtil;
 import com.amethystum.manage.common.utils.ResultUtil;
@@ -44,6 +45,7 @@ public class DemoController extends BaseController<Demo, String>{
     @ResponseBody
     @ApiOperation(value = "for test unauth method")
     @SystemLog
+    @BizCacheable(key="xxx",expireTime=1)
     public Result<List<Demo>> test(){
     	log.info( "test info method");
     	log.debug( "test debug method");

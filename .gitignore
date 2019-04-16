@@ -9,3 +9,4 @@ xboot-logs/
 *.iml
 
 *.bak
+/logs/
