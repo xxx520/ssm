@@ -87,7 +87,7 @@ public class SystemLogAspect {
             Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String username=null;
             if(user==null){username="";}else
-            if(CommonConstant.anonymousUser.equals(user)){username=user.toString();}else
+            if(CommonConstant.ANONYMOUSUSER.equals(user)){username=user.toString();}else
             username= ((UserDetails)user).getUsername();
             
             if (!StringUtils.isEmpty(username)) {

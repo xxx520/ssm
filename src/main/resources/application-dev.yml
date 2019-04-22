@@ -121,6 +121,7 @@ swagger:
   title: XBoot API接口文档
   description: XBoot Api Documentation
   version: 1.0.0
+  show: true
   termsOfServiceUrl: http://blog.54xxx.cn
   contact:
     name: Exrick

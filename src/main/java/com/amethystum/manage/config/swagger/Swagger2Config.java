@@ -30,6 +30,8 @@ public class Swagger2Config {
 
     @Value("${swagger.version}")
     private String version;
+    @Value("${swagger.show}")
+    private Boolean show;
 
     @Value("${swagger.termsOfServiceUrl}")
     private String termsOfServiceUrl;
@@ -49,6 +51,7 @@ public class Swagger2Config {
         log.info("加载Swagger2");
 
         return new Docket(DocumentationType.SWAGGER_2)
+        		.enable(show)
                 .apiInfo(apiInfo()).select()
                 //扫描所有有注解的api，用这种方式更灵活
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))

@@ -33,6 +33,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             String needPerm = c.getAttribute();
             for(GrantedAuthority ga : authentication.getAuthorities()) {
                 // 匹配用户拥有的ga 和 系统中的needPerm
+            	// 匿名用户权限的控制 TODO 
                 if(needPerm.trim().equals(ga.getAuthority())) {
                     return;
                 }

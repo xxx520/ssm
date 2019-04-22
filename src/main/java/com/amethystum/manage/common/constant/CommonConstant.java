@@ -9,7 +9,7 @@ public interface CommonConstant {
 	/**
 	 * 未登陆用户标致
 	 */
-	String anonymousUser="anonymousUser";
+	String ANONYMOUSUSER="anonymousUser";
     /**
      * 用户默认头像
      */

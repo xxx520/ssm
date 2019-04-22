@@ -10,3 +10,4 @@ xboot-logs/
 
 *.bak
 /logs/
+/.settings/
