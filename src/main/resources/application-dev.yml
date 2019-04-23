@@ -25,6 +25,9 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     # Druid StatViewServlet配置
     druid:
+    #false表示不需要加密
+      config:
+        decrypt: true
       stat-view-servlet:
         # 默认true 内置监控页面首页/druid/index.html
         enabled: true

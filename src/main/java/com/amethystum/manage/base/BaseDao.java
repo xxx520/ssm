@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 /**
  * @author Amethystum
+ *  如果需要添加自定义方法
+ * 
  */
 // 自定义接口 不会创建接口的实例 必须加此注解
 @NoRepositoryBean

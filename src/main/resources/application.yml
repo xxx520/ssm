@@ -1,5 +1,6 @@
 
 # 配置文件加密key
+# 如果不需要加密，需要删除springboot jascry包
 jasypt:
   encryptor:
     password: password
