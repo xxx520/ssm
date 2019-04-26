@@ -22,6 +22,9 @@
 	<profiles>
 		<profile>
 			<id>dev</id>
+			<properties>
+				<activatedProperties>dev</activatedProperties>
+			</properties>
 			<activation>default</activation>
 			<dependencies>
 				<dependency>
@@ -32,6 +35,9 @@
 		</profile>
 		<profile>
 			<id>prod</id>
+			<properties>
+				<activatedProperties>prod</activatedProperties>
+			</properties>
 			<dependencies>
 				<dependency>
 		            <groupId>org.springframework.boot</groupId>
@@ -51,6 +57,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- <exclusions>
+		        <exclusion>
+		            <groupId>org.springframework.boot</groupId>
+		            <artifactId>spring-boot-starter-tomcat</artifactId>
+		        </exclusion>
+		    </exclusions> -->
         </dependency>
         <dependency>  
 		    <groupId>javax.servlet</groupId>  

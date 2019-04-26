@@ -39,6 +39,7 @@
 	test
 http://localhost:8888/ops-manage/xboot/login
 
-mvn package -Dprod
+mvn cleanup package -Pprod
+
 
 	

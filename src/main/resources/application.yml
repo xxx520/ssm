@@ -7,4 +7,4 @@ jasypt:
 
 spring:
   profiles:
-    active: dev
+    active: @activatedProperties@
