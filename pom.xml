@@ -25,7 +25,9 @@
 			<properties>
 				<activatedProperties>dev</activatedProperties>
 			</properties>
-			<activation>default</activation>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<dependencies>
 				<dependency>
 		            <groupId>org.springframework.boot</groupId>
@@ -195,6 +197,24 @@
 			<artifactId>openstack4j</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<dependency>
+			    <groupId>com.github.houbb</groupId>
+			    <artifactId>junitperf</artifactId>
+			    <version>1.0.2</version>
+		</dependency>
+		<dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.9.3</version>
+             <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -204,14 +224,39 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>  
+            <plugin>  Annotation Processing Tool
 			    <groupId>org.apache.maven.plugins</groupId>  
 			    <artifactId>maven-surefire-plugin</artifactId>  
 			    <version>2.5</version>  
 			    <configuration>  
 			        <skip>true</skip>  
 			    </configuration>  
-			</plugin> 
+			</plugin>
+			<!-- jmh插件，先执行mvn test,然后执行jmh的测试方法（main方法，）或者在eclipse直接安装
+			因为jmh用到了APT(Annotation Processing Tool)，需要在eclipse中安装m2e-apt插件（在Eclipse Marketplace中就可以搜到） --> 
+			<!-- <plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>exec-maven-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>run-benchmarks</id>
+			            <phase>integration-test</phase>
+			            <goals>
+			                <goal>exec</goal>
+			            </goals>
+			            <configuration>
+			                <classpathScope>test</classpathScope>
+			                <executable>java</executable>
+			                <arguments>
+			                    <argument>-classpath</argument>
+			                    <classpath />
+			                    <argument>org.openjdk.jmh.Main</argument>
+			                    <argument>.*</argument>
+			                </arguments>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin> -->
         </plugins>
     </build>
 </project>

@@ -23,6 +23,7 @@ import com.amethystum.manage.modules.base.service.mybatis.IPermissionService;
 import com.amethystum.manage.modules.base.service.mybatis.IUserRoleService;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.github.houbb.junitperf.core.annotation.JunitPerfConfig;
 import com.google.gson.Gson;
 
 @RunWith(SpringRunner.class)
@@ -35,6 +36,18 @@ public class TestBaseService {
     private Demo2Mapper Demo2Mapper;
     @Autowired
     private com.amethystum.manage.modules.base.service.DictService DictService;
+    
+    /**
+     * 单一线程，执行 1000ms，默认以 html 输出测试结果
+     * @throws InterruptedException if any
+     */
+    @Test
+    @JunitPerfConfig(duration = 1000)
+    public void helloWorldTest() throws InterruptedException {
+        //This is what you want to test.
+        System.out.println("hello world");
+        Thread.sleep(20);
+    }
 
 //    @Test
 //    public void testSave() {

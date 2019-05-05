@@ -11,3 +11,6 @@ xboot-logs/
 *.bak
 /logs/
 /.settings/
+/.classpath
+/.factorypath
+/.project
