@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.amethystum.manage.modules.*.*.mapper")
 public class MybatisPlusConfig {
-
+	static{
+		System.out.println("@@@mybatis load!!");
+	}
     /**
      * 分页插件，自动识别数据库类型
      */

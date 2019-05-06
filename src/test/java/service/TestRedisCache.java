@@ -27,4 +27,5 @@ public class TestRedisCache extends TestBaseService{
 		list.add(entity);
 		return list;
 	}
+	
 }

@@ -3,6 +3,7 @@ package service;
 import java.util.Date;
 import java.util.List;
 
+import org.databene.contiperf.PerfTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import base.BaseServiceTest;
 
 import com.amethystum.manage.BootApplication;
 import com.amethystum.manage.modules.api.dao.mapper.Demo2Mapper;
@@ -26,9 +29,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.houbb.junitperf.core.annotation.JunitPerfConfig;
 import com.google.gson.Gson;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = BootApplication.class)
-public class TestBaseService {
+public class TestBaseService extends BaseServiceTest{
 
     @Autowired
     private DemoService DemoService;
@@ -37,6 +38,15 @@ public class TestBaseService {
     @Autowired
     private com.amethystum.manage.modules.base.service.DictService DictService;
     
+  //10个线程 执行100次
+    @Test
+    @PerfTest(invocations = 100,threads = 10)
+    public void test(){
+        Long id = (long) (Math.random()*100);
+        Demo demo = DemoService.get(id+"");
+        System.out.println(new Gson().toJson(demo));
+    }
+
     /**
      * 单一线程，执行 1000ms，默认以 html 输出测试结果
      * @throws InterruptedException if any
