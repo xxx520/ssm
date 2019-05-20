@@ -1,7 +1,11 @@
 package com.amethystum.manage.generator;
 
 import com.amethystum.manage.generator.bean.EntityOfEntity;
+import com.amethystum.manage.generator.util.DBUtil;
+import com.google.gson.Gson;
+
 import org.springframework.util.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.beetl.core.Configuration;
@@ -10,9 +14,15 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.FileResourceLoader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * mybatis模板代码生成器
@@ -31,14 +41,30 @@ public class MybatisXGenerator {
     private static  String serviceImplPackage = "com.amethystum.manage.modules.your.serviceimpl";
     private static  String controllerPackage = "com.amethystum.manage.modules.your.controller";
     private static  String mapperXmlDir = "";
-
+    
+    private static String url="jdbc:mysql://localhost:3306/samp_db";
+	private static String username="";
+	private static String password="";
+	private static String database="";
+	private static String driver = "com.mysql.jdbc.Driver";
+    
+    static EntityOfEntity entity;
+    static Properties type_mapping_properties=new Properties();
+    static{
+    	try {
+			type_mapping_properties.load(MybatisXGenerator.class.getResourceAsStream( "type_mapping.properties"));
+			System.out.println(new Gson().toJson(type_mapping_properties));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
     /**
      * 运行该主函数即可生成代码
      * @param args
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-    	className="Demo2";
+    	className="Log";
     	primaryKeyType="String";
     	tablePre="t_";
     	controllerPackage="com.amethystum.manage.modules.api.controller";
@@ -48,14 +74,26 @@ public class MybatisXGenerator {
     	serviceImplPackage="com.amethystum.manage.modules.api.serviceimpl.mybatis";
     	mapperXmlDir=System.getProperty("user.dir")+"/src/main/resources/mapper";
     	
+    	database="ops-manage";
+    	url="jdbc:mysql://localhost:3306/"+database;
+    	username="root";
+    	password="";
+    	
         //模板路径
         String root = System.getProperty("user.dir")+"/src/main/java/com/amethystum/manage/generator/template/mybatis";
         FileResourceLoader resourceLoader = new FileResourceLoader(root,"utf-8");
         Configuration cfg = Configuration.defaultConfiguration();
         GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
-
+        
+        try {
+			entity=initEntity();
+			System.out.println(">>>javatypelist:"+entity.getJavaTypeList());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
         //生成代码
-        generateCode(gt);
+//        generateCode(gt);
 
         //根据类名删除生成的代码
         //deleteCode(className);
@@ -74,8 +112,37 @@ public class MybatisXGenerator {
         Template serviceImplTemplate = gt.getTemplate("serviceImpl.btl");
         Template controllerTemplate = gt.getTemplate("controller.btl");
         Template mapperXmlTemplate = gt.getTemplate("mapper.btl");
+        		
+        //生成实体类代码
+        String fileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(entityPackage) + "/" + className + ".java";
+        genFileByTemplete(entityTemplate, entity, fileUrl);
+//        genEntity(entityTemplate,entity);
 
-        EntityOfEntity entity = new EntityOfEntity();
+        //生成dao代码
+        fileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(daoPackage) + "/" +className + "Mapper.java";
+        genFileByTemplete(daoTemplate, entity, fileUrl);
+
+        //生成service代码
+        fileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(servicePackage) + "/" + className + "Service.java";
+        genFileByTemplete(serviceTemplate, entity, fileUrl);
+
+        //生成serviceImpl代码
+        String serviceImplFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(serviceImplPackage) + "/" + className + "ServiceImpl.java";
+        genFileByTemplete(serviceImplTemplate, entity, serviceImplFileUrl);
+
+        //生成controller代码
+        String controllerFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(controllerPackage) + "/" + className + "Controller.java";
+        genFileByTemplete(controllerTemplate, entity, controllerFileUrl);
+        
+        //生成mapper.xml代码
+        String mapperXmlFileUrl = mapperXmlDir + "/" + className + "Mapper.xml";
+        genFileByTemplete(mapperXmlTemplate, entity, mapperXmlFileUrl);
+        
+        log.info("生成代码成功！");
+    }
+    
+    private static EntityOfEntity initEntity() throws SQLException {
+    	EntityOfEntity entity=new EntityOfEntity();
         entity.setEntityPackage(entityPackage);
         entity.setDaoPackage(daoPackage);
         entity.setServicePackage(servicePackage);
@@ -87,108 +154,75 @@ public class MybatisXGenerator {
         entity.setClassNameLowerCase(first2LowerCase(className));
         entity.setDescription(description);
         entity.setPrimaryKeyType(primaryKeyType);
-
-        OutputStream out = null;
-
-        //生成实体类代码
-        entityTemplate.binding("entity",entity);
-        String entityResult = entityTemplate.render();
-        log.info(entityResult);
+        DBUtil dbUtil = new DBUtil(url, username, password, database);
+        List<Object[]> tableDesc = dbUtil.getTableDesc(tablePre+className);
+        initJavaTypeList(entity,tableDesc);
+		return entity;
+	}
+    /**
+     * 
+     * 初始化对象属性列表
+     * @param entity 
+     * @param tableDesc name,type,length [ "id", "varchar", 32 ],
+     */
+	private static void initJavaTypeList(EntityOfEntity entity,
+			List<Object[]> tableDesc) {
+		StringBuilder bd=new StringBuilder();
+		for(Object[] attrs:tableDesc){
+			bd.append(initJavaType(attrs));
+		}
+		entity.setJavaTypeList(bd.toString());
+	}
+	
+	private static String initJavaType(Object[] attrs){
+		StringBuilder bd=new StringBuilder();
+		if("id".equals(attrs[0])){
+			bd.append( "    @TableId\r\n");
+		}
+		bd.append( "    ").append("@ApiModelProperty(value = \"唯一标识\")").append( "\r\n");
+		bd.append( "    ").append(getJavaTypeBySQLType(attrs[1])).append( " "+underline2camel(attrs[0]+";")).append( "\r\n");
+		bd.append( "\r\n");
+		return bd.toString();
+	}
+	private static Object getJavaTypeBySQLType(Object sqlType){
+		return type_mapping_properties.get((""+sqlType).toUpperCase());
+	}
+	private static void genFileByTemplete(Template template, EntityOfEntity entity,String fileUrl) throws IOException {
+    	template.binding("entity",entity);
+        String result = template.render();
+        log.info(result);
         //创建文件
-        String entityFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(entityPackage) + "/" + className + ".java";
-        File entityFile = new File(entityFileUrl);
-        File entityDir = entityFile.getParentFile();
-        if (!entityDir.exists()) {
-            entityDir.mkdirs();
-        }
-        if(!entityFile.exists()){
-            //实体类若存在则不重新生成
-            entityFile.createNewFile();
-            out = new FileOutputStream(entityFile);
-            entityTemplate.renderTo(out);
-        }
-
-        //生成dao代码
-        daoTemplate.binding("entity",entity);
-        String daoResult = daoTemplate.render();
-        log.info(daoResult);
-        //创建文件
-        String daoFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(daoPackage) + "/" +className + "Mapper.java";
-        File daoFile = new File(daoFileUrl);
+//        String daoFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(daoPackage) + "/" +className + "Mapper.java";
+        File daoFile = new File(fileUrl);
         File daoDir = daoFile.getParentFile();
         if (!daoDir.exists()) {
             daoDir.mkdirs();
         }
         daoFile.createNewFile();
-        out = new FileOutputStream(daoFile);
-        daoTemplate.renderTo(out);
+        OutputStream out = new FileOutputStream(daoFile);
+        template.renderTo(out);
+	}
 
-        //生成service代码
-        serviceTemplate.binding("entity",entity);
-        String serviceResult = serviceTemplate.render();
-        log.info(serviceResult);
-        //创建文件
-        String serviceFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(servicePackage) + "/" + className + "Service.java";
-        File serviceFile = new File(serviceFileUrl);
-        File serviceDir = serviceFile.getParentFile();
-        if (!serviceDir.exists()) {
-            serviceDir.mkdirs();
-        }
-        serviceFile.createNewFile();
-        out = new FileOutputStream(serviceFile);
-        serviceTemplate.renderTo(out);
+//	private static void genEntity(Template template, EntityOfEntity entity) throws IOException {
+//    	template.binding("entity",entity);
+//        String entityResult = template.render();
+//        log.info(entityResult);
+//        //创建文件
+//        String entityFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(entityPackage) + "/" + className + ".java";
+//        File entityFile = new File(entityFileUrl);
+//        File entityDir = entityFile.getParentFile();
+//        if (!entityDir.exists()) {
+//            entityDir.mkdirs();
+//        }
+//        if(!entityFile.exists()){
+//            //实体类若存在则不重新生成
+//            entityFile.createNewFile();
+//            OutputStream out = new FileOutputStream(entityFile);
+//            template.renderTo(out);
+//        }
+//	}
 
-        //生成serviceImpl代码
-        serviceImplTemplate.binding("entity",entity);
-        String serviceImplResult = serviceImplTemplate.render();
-        log.info(serviceImplResult);
-        //创建文件
-        String serviceImplFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(serviceImplPackage) + "/" + className + "ServiceImpl.java";
-        File serviceImplFile = new File(serviceImplFileUrl);
-        File serviceImplDir = serviceImplFile.getParentFile();
-        if (!serviceImplDir.exists()) {
-            serviceImplDir.mkdirs();
-        }
-        serviceImplFile.createNewFile();
-        out = new FileOutputStream(serviceImplFile);
-        serviceImplTemplate.renderTo(out);
-
-        //生成controller代码
-        controllerTemplate.binding("entity",entity);
-        String controllerResult = controllerTemplate.render();
-        log.info(controllerResult);
-        //创建文件
-        String controllerFileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(controllerPackage) + "/" + className + "Controller.java";
-        File controllerFile = new File(controllerFileUrl);
-        File controllerDir = controllerFile.getParentFile();
-        if (!controllerDir.exists()) {
-            controllerDir.mkdirs();
-        }
-        controllerFile.createNewFile();
-        out = new FileOutputStream(controllerFile);
-        controllerTemplate.renderTo(out);
-        
-        //生成mapper.xml代码
-        mapperXmlTemplate.binding("entity",entity);
-        String mapperXmlResult = controllerTemplate.render();
-        log.info(mapperXmlResult);
-        //创建文件
-        String mapperXmlFileUrl = mapperXmlDir + "/" + className + "Mapper.xml";
-        File mapperXmlFile = new File(mapperXmlFileUrl);
-        File mapperXmlDir = mapperXmlFile.getParentFile();
-        if (!mapperXmlDir.exists()) {
-        	mapperXmlDir.mkdirs();
-        }
-        mapperXmlFile.createNewFile();
-        out = new FileOutputStream(mapperXmlFile);
-        mapperXmlTemplate.renderTo(out);
-
-        
-        out.close();
-        log.info("生成代码成功！");
-    }
-
-    /**
+	/**
      * 删除指定类代码
      * @param className
      * @throws IOException
@@ -256,7 +290,28 @@ public class MybatisXGenerator {
         }
         return (str.charAt(0)+sb.toString()).toLowerCase();
     }
-
+    /**
+     * 下划线转驼峰
+     */
+    public static String underline2camel(String str) {
+    	if (StringUtils.isEmpty(str)) {
+    		return "";
+    	}
+    	str=str.toLowerCase();
+    	String[] split = str.split( "_");
+    	StringBuilder bd=new StringBuilder();
+    	for (int i = 0; i < split.length; i++) {
+    		if(i==0){
+    			bd.append(split[i]);
+    		}else{
+    			bd.append(firstChar2UpCase(split[i]));
+    		}
+    	}
+    	return bd.toString();
+    }
+    public static String firstChar2UpCase(String str){
+    	return (str.charAt(0)+"").toUpperCase()+str.substring(1);
+    }
     /**
      * 首字母小写
      */

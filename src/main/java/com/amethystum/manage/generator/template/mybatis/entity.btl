@@ -28,4 +28,5 @@ public class ${entity.className}{
     @ApiModelProperty(value = "唯一标识")
     private String id = UUIdUtil.getUUid();
 
+${entity.javaTypeList}
 }

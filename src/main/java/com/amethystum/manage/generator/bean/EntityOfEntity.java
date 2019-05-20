@@ -1,5 +1,7 @@
 package com.amethystum.manage.generator.bean;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -29,5 +31,10 @@ public class EntityOfEntity {
     private String description;
 
     private String primaryKeyType;
-
+    
+    List<EntityAttribute> attributes;
+    /**
+     * 对于java属性列表
+     */
+    private String javaTypeList;
 }
