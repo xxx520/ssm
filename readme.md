@@ -17,6 +17,12 @@
 - common util,aop,contants
 - config 拦截器，配置
 - generator 代码生成器
+    bean      entity相关
+    templete  代码模板
+    util      代码生成相关工具类，dbUtil
+    
+    
+    
 - modules	base（系统相关）api（业务相关）
 
 
@@ -40,6 +46,10 @@
 http://localhost:8888/ops-manage/xboot/login
 
 mvn cleanup package -Pprod
+
+
+### 国际化
+	i18n
 
 
 	

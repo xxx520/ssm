@@ -1,5 +1,6 @@
 package com.amethystum.manage.generator;
 
+import com.amethystum.manage.generator.bean.EntityAttribute;
 import com.amethystum.manage.generator.bean.EntityOfEntity;
 import com.amethystum.manage.generator.util.DBUtil;
 import com.google.gson.Gson;
@@ -13,16 +14,19 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.FileResourceLoader;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Scanner;
 
 /**
  * mybatis模板代码生成器
@@ -65,6 +69,7 @@ public class MybatisXGenerator {
      */
     public static void main(String[] args) throws IOException {
     	className="Log";
+    	className="KeystoneProject";
     	primaryKeyType="String";
     	tablePre="t_";
     	controllerPackage="com.amethystum.manage.modules.api.controller";
@@ -93,7 +98,7 @@ public class MybatisXGenerator {
 			return;
 		}
         //生成代码
-//        generateCode(gt);
+        generateCode(gt);
 
         //根据类名删除生成的代码
         //deleteCode(className);
@@ -105,8 +110,7 @@ public class MybatisXGenerator {
      * @throws IOException
      */
     private static void generateCode(GroupTemplate gt) throws IOException{
-
-        Template entityTemplate = gt.getTemplate("entity.btl");
+    	Template entityTemplate = gt.getTemplate("entity.btl");
         Template daoTemplate = gt.getTemplate("dao.btl");
         Template serviceTemplate = gt.getTemplate("service.btl");
         Template serviceImplTemplate = gt.getTemplate("serviceImpl.btl");
@@ -115,6 +119,16 @@ public class MybatisXGenerator {
         		
         //生成实体类代码
         String fileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(entityPackage) + "/" + className + ".java";
+        //判断文件是否存在，文件存在需要输入yes continue
+        File file=new File(fileUrl);
+        if(file.exists()){
+        	Scanner scanner = new Scanner(System.in);
+        	String next = scanner.next();
+        	if(!"yes".equals(next)){
+        		System.out.println("文件已经存在，取消生成代码");
+        		return;
+        	}
+        }
         genFileByTemplete(entityTemplate, entity, fileUrl);
 //        genEntity(entityTemplate,entity);
 
@@ -154,8 +168,9 @@ public class MybatisXGenerator {
         entity.setClassNameLowerCase(first2LowerCase(className));
         entity.setDescription(description);
         entity.setPrimaryKeyType(primaryKeyType);
+        System.out.println(">>>entity:"+new Gson().toJson(entity));
         DBUtil dbUtil = new DBUtil(url, username, password, database);
-        List<Object[]> tableDesc = dbUtil.getTableDesc(tablePre+className);
+        List<Object[]> tableDesc = dbUtil.getTableDesc(entity.getTableName());
         initJavaTypeList(entity,tableDesc);
 		return entity;
 	}
@@ -168,19 +183,28 @@ public class MybatisXGenerator {
 	private static void initJavaTypeList(EntityOfEntity entity,
 			List<Object[]> tableDesc) {
 		StringBuilder bd=new StringBuilder();
+		List<EntityAttribute> attrList=new ArrayList<EntityAttribute>();
 		for(Object[] attrs:tableDesc){
+			attrList.add(turnAttrs2Attr(attrs));
 			bd.append(initJavaType(attrs));
 		}
 		entity.setJavaTypeList(bd.toString());
 	}
 	
+	private static EntityAttribute turnAttrs2Attr(Object[] attrs) {
+		EntityAttribute attr=new EntityAttribute();
+		attr.setName(attrs[0]+"");
+		
+		return attr;
+	}
+
 	private static String initJavaType(Object[] attrs){
 		StringBuilder bd=new StringBuilder();
 		if("id".equals(attrs[0])){
 			bd.append( "    @TableId\r\n");
 		}
 		bd.append( "    ").append("@ApiModelProperty(value = \"唯一标识\")").append( "\r\n");
-		bd.append( "    ").append(getJavaTypeBySQLType(attrs[1])).append( " "+underline2camel(attrs[0]+";")).append( "\r\n");
+		bd.append( "    private ").append(getJavaTypeBySQLType(attrs[1])).append( " "+underline2camel(attrs[0]+";")).append( "\r\n");
 		bd.append( "\r\n");
 		return bd.toString();
 	}

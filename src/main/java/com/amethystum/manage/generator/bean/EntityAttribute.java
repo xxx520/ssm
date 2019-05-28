@@ -12,6 +12,7 @@ public class EntityAttribute {
 	String name;
 	String jdbcType;
 	String javaType;
+	String comment;
 	int lenth;
 	Object defaultValue;
 	boolean isNull;

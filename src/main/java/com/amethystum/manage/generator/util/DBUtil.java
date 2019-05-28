@@ -53,19 +53,25 @@ public class DBUtil {
 	public List<Object[]> getTableDesc(String tableName) throws SQLException {  
         List<Object[]> list = new ArrayList<Object[]>();  
         Connection conn = this.getConn();  
-        String sql = "select column_name as 'name',data_type as 'type',ifnull(character_maximum_length,0) as 'lenth' from information_schema.columns where"
+        String sql = "select column_name as 'name',data_type as 'type',ifnull(character_maximum_length,0) as 'lenth',ifnull(COLUMN_COMMENT,'') as 'comment' from information_schema.columns where"
         		+ " TABLE_SCHEMA = '"+this.database+"'and table_name = ?";  
         PreparedStatement ps = conn.prepareStatement(sql);  
         ps.setString(1, tableName);  
-        ResultSet rs = ps.executeQuery();  
+        ResultSet rs = ps.executeQuery(); 
+        boolean isEmpty=true;
         while (rs.next()) {  
-        	Object[] info = new Object[3];
+        	isEmpty=false;
+        	Object[] info = new Object[4];
         	info[0]=rs.getString(1);
         	info[1]=rs.getString(2);
         	info[2]=rs.getObject(3);
+        	info[3]=rs.getObject(4);
             list.add(info);  
-        }  
-        System.out.println(new Gson().toJson(list));
+        }
+        if(isEmpty){
+        	System.out.println("找不到属性值！！");
+        }
+        System.out.println(">>>jdbctypelist:"+new Gson().toJson(list));
         return list;  
     }  
 	
