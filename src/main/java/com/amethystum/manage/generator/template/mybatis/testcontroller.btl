@@ -1,0 +1,30 @@
+package controller;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
+
+import base.BaseControllerTest;
+import com.amethystum.manage.common.vo.Result;
+import com.google.gson.Gson;
+
+
+public class ${entity.className}ControllerTest extends BaseControllerTest{
+	@Test
+	public void test(){
+		Map<String, String> params = new HashMap<>();
+    	String uri = "/api/${entity.className}";
+		try {
+			mockLogin( "admin", "123456");
+			String content = getString(uri, params);
+			System.out.println(content);
+			Result result = new Gson().fromJson(content, Result.class);
+			Assert.assertTrue("成功", result.getCode()==200);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+}

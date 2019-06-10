@@ -1,0 +1,12 @@
+package service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import base.BaseServiceTest;
+import com.amethystum.manage.modules.api.dao.mapper.${entity.className}Mapper;
+
+public class Test${entity.className}Service extends BaseServiceTest{
+
+    @Autowired
+    private ${entity.className}Mapper ${entity.className}Mapper;
+}

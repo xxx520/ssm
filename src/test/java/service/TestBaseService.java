@@ -6,26 +6,17 @@ import java.util.List;
 import org.databene.contiperf.PerfTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import base.BaseServiceTest;
-
-import com.amethystum.manage.BootApplication;
 import com.amethystum.manage.modules.api.dao.mapper.Demo2Mapper;
 import com.amethystum.manage.modules.api.entity.Demo;
 import com.amethystum.manage.modules.api.service.DemoService;
 import com.amethystum.manage.modules.base.entity.Dict;
-import com.amethystum.manage.modules.base.entity.Permission;
 import com.amethystum.manage.modules.base.entity.Role;
-import com.amethystum.manage.modules.base.entity.UserRole;
 import com.amethystum.manage.modules.base.service.mybatis.IPermissionService;
 import com.amethystum.manage.modules.base.service.mybatis.IUserRoleService;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.houbb.junitperf.core.annotation.JunitPerfConfig;
 import com.google.gson.Gson;
 

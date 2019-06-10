@@ -116,6 +116,8 @@ public class MybatisXGenerator {
         Template serviceImplTemplate = gt.getTemplate("serviceImpl.btl");
         Template controllerTemplate = gt.getTemplate("controller.btl");
         Template mapperXmlTemplate = gt.getTemplate("mapper.btl");
+        Template testControllerTemplate = gt.getTemplate("testcontroller.btl");
+        Template testServiceTemplate = gt.getTemplate("testservice.btl");
         		
         //生成实体类代码
         String fileUrl = System.getProperty("user.dir")+"/src/main/java/"+ dotToLine(entityPackage) + "/" + className + ".java";
@@ -151,6 +153,12 @@ public class MybatisXGenerator {
         //生成mapper.xml代码
         String mapperXmlFileUrl = mapperXmlDir + "/" + className + "Mapper.xml";
         genFileByTemplete(mapperXmlTemplate, entity, mapperXmlFileUrl);
+        //gen test controller code
+        String testControllerFileUrl = System.getProperty("user.dir")+"/src/test/java/controller/Test " + className + "Controller.java";
+        genFileByTemplete(testControllerTemplate, entity, testControllerFileUrl);
+        //gen test service code
+        String testServiceFileUrl = System.getProperty("user.dir")+"/src/test/java/service/Test " + className + "Service.java";
+        genFileByTemplete(testServiceTemplate, entity, testServiceFileUrl);
         
         log.info("生成代码成功！");
     }
